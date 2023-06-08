@@ -1,6 +1,6 @@
 {
   "name": "simpleapi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Sebuah RestfulAPI Sederhana menggunakan ExpressJS dan database MySql yang berisi tentang daftar akun media sosial yang dimiliki oleh seseorang",
   "main": "index.js",
   "scripts": {
@@ -20,6 +20,7 @@
   "author": "Imam Subekti",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mysql2": "^3.3.3"
