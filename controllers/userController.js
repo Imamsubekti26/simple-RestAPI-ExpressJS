@@ -2,6 +2,11 @@ const DB = require("../system/database.js");
 
 const now = new Date().toISOString().slice(0, 19).replace("T", " ");
 
+/**
+ * Get many data from database
+ * @param {any} req
+ * @param {any} res
+ */
 const index = async (req, res) => {
   const offset = req.query.page >= 1 ? 10 * (req.query.page - 1) : 0;
   const query = `SELECT  * FROM users WHERE deleted_at IS NULL LIMIT 10 OFFSET ${offset}`;
@@ -16,6 +21,11 @@ const index = async (req, res) => {
   }
 };
 
+/**
+ * Get one specific data from database
+ * @param {any} req
+ * @param {any} res
+ */
 const find = async (req, res) => {
   const query = `SELECT  * FROM users WHERE id = ? && deleted_at IS NULL LIMIT 1`;
   const dataRow = [req.params.id];
@@ -31,6 +41,11 @@ const find = async (req, res) => {
   }
 };
 
+/**
+ * Store data to database
+ * @param {any} req
+ * @param {any} res
+ */
 const store = async (req, res) => {
   const query = `INSERT INTO users (id, email, name, linkedin, twitter, instagram, tiktok, created_at) VALUE (NULL, ?, ?, ?, ?, ?, ?, ?)`;
   const dataRow = [
@@ -53,6 +68,11 @@ const store = async (req, res) => {
   }
 };
 
+/**
+ * update data from database
+ * @param {any} req
+ * @param {any} res
+ */
 const update = async (req, res) => {
   const query = `UPDATE users SET email = ?, name = ?, linkedin = ?, twitter = ?, instagram = ?, tiktok = ?, updated_at = ? WHERE id = ? `;
   const dataRow = [
@@ -76,6 +96,11 @@ const update = async (req, res) => {
   }
 };
 
+/**
+ * Do softDelete from database
+ * @param {any} req
+ * @param {any} res
+ */
 const deleteData = async (req, res) => {
   const query = `UPDATE users SET deleted_at = ? WHERE id = ?`;
   const dataRow = [now, req.params.id];
