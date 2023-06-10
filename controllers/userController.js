@@ -1,5 +1,10 @@
+const sharp = require("sharp");
+const fs = require("fs");
 const DB = require("../system/database.js");
 
+/**
+ * get current time in sql format
+ */
 const now = new Date().toISOString().slice(0, 19).replace("T", " ");
 
 /**
@@ -61,6 +66,8 @@ const store = async (req, res) => {
   const conn = await DB();
   const [result] = await conn.execute(query, dataRow);
 
+  const uploadImage = processImage(req.file, req.body.name);
+
   if (result.affectedRows <= 0) {
     res.status(404).json({ msg: "Affected Rows is 0", data: result });
   } else {
@@ -113,6 +120,23 @@ const deleteData = async (req, res) => {
   } else {
     res.status(201).json({ data: { msg: result.info } });
   }
+};
+
+/**
+ * upload image and then return 1 if successful
+ * @param {any} image
+ * @param {string} name
+ * @returns number
+ */
+const processImage = (image, name) => {
+  sharp(image.destination + image.filename)
+    .toFile(`storage/images/${name}.webp`)
+    .then(() =>
+      fs.unlink(image.destination + image.filename, (err) => {
+        if (err) throw err;
+      })
+    );
+  return 1;
 };
 
 module.exports = { index, find, store, update, deleteData };
